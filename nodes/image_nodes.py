@@ -1006,6 +1006,42 @@ class ImagePadForOutpaintMasked:
         else:
             return (new_image, mask,)
 
+class ImagePadForOutpaintMasked2:
+    
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "left": ("INT", {"default": 0, "min": 0, "max": MAX_RESOLUTION, "step": 8}),
+                "top": ("INT", {"default": 0, "min": 0, "max": MAX_RESOLUTION, "step": 8}),
+                "right": ("INT", {"default": 0, "min": 0, "max": MAX_RESOLUTION, "step": 8}),
+                "bottom": ("INT", {"default": 0, "min": 0, "max": MAX_RESOLUTION, "step": 8}),
+                "feathering": ("INT", {"default": 0, "min": 0, "max": MAX_RESOLUTION, "step": 1}),
+            },
+            "optional": {
+                "mask": ("MASK",),
+            }
+        }
+
+    RETURN_TYPES = ("IMAGE", "MASK", "MASK")
+    FUNCTION = "expand_image"
+
+    CATEGORY = "image"
+
+    def expand_image(self, image, left, top, right, bottom, feathering, mask=None):
+        new_image, new_mask = ImagePadForOutpaintMasked.expand_image(self, image_scaled, pad_left, pad_top, pad_right, pad_bottom, feathering, None)
+        if mask is not None:
+            in_mask = F.pad(mask, (left, right, top, bottom), mode='constant', value=0)
+            return (new_image, new_mask, in_mask,)
+        else:
+            B, H, W, C = image.size()
+            zero_mask = torch.zeros(
+                (B, H + top + bottom, W + left + right),
+                dtype=torch.float32,
+            )
+            return (new_image, new_mask, zero_mask,)
+
 class ImagePadForOutpaintTargetSize:
     upscale_methods = ["nearest-exact", "bilinear", "area", "bicubic", "lanczos"]
     @classmethod

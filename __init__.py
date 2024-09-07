@@ -60,6 +60,7 @@ NODE_CONFIG = {
     "ImageNormalize_Neg1_To_1": {"class": ImageNormalize_Neg1_To_1, "name": "Image Normalize -1 to 1"},
     "ImagePass": {"class": ImagePass},
     "ImagePadForOutpaintMasked": {"class": ImagePadForOutpaintMasked, "name": "Image Pad For Outpaint Masked"},
+    "ImagePadForOutpaintMasked2": {"class": ImagePadForOutpaintMasked2, "name": "Image Pad For Outpaint Masked with Input Mask Passthrough"},
     "ImagePadForOutpaintTargetSize": {"class": ImagePadForOutpaintTargetSize, "name": "Image Pad For Outpaint Target Size"},
     "ImageResizeKJ": {"class": ImageResizeKJ, "name": "Resize Image"},
     "ImageUpscaleWithModelBatched": {"class": ImageUpscaleWithModelBatched, "name": "Image Upscale With Model Batched"},
